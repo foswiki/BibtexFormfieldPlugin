@@ -3,3 +3,4 @@ lib/Foswiki/Form/Bibtex.pm 0644
 lib/Foswiki/Plugins/BibtexFormfieldPlugin.pm 0644
 lib/Foswiki/Plugins/BibtexFormfieldPlugin/Config.spec 0644
 lib/Foswiki/Plugins/BibtexFormfieldPlugin/Core.pm 0644
+data/_Bibliography/BibtexArticleForm.txt 0644
