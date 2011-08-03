@@ -1,0 +1,4 @@
+Text::BibTex,>=0.57,cpan,Required.
+Foswiki::Plugins::SemanticLinksPlugin,>=2.12,cpan,Optional. Enables the included bibliography system based on [[Cite::Bloggs]] syntax
+Foswiki::Plugins::JQGridPlugin,>=0.9.0,cpan,Optional. For convenient browsing of bibliographic records
+Foswiki::Plugins::FlexFormPlugin,>=0,cpan,Optional. For creating new bibliographic records

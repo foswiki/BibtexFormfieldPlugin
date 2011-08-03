@@ -1,0 +1,5 @@
+%META:TOPICPARENT{name="Types"}%
+
+| *Name* | *Type* | *Size* | *Values* | *Tooltip* | *Attributes* |
+| Type | select | | article,book,booklet,conference,inbook,incollection,inproceedings,manual,mastersthesis,misc,phdthesis,proceedings,techreport,unpublished | The =@type= of the bibtex work | |
+| Description | text | 100 | | Summary of this form of the =@type=. | |

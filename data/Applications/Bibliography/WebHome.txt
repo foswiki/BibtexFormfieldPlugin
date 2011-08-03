@@ -1,0 +1,63 @@
+%STARTSECTION{"creator"}%
+%IF{
+  "defined BIBLIOGRAPHYWEB AND $'BIBLIOGRAPHYWEB'"
+  then="$percntINCLUDE{\"%TOPIC%\" section=\"showcreator\"}$percnt"
+  else="<blockquote class='foswikiHelp'>$percntX$percnt %STARTSECTION{"installwarn"}% The =BIBLIOGRAPHYWEB= [[%SYSTEMWEB%.PreferenceSettings][preference setting]] is empty or undefined. This indicates that you may not have finished deploying this bibliography web properly; see [[%SYSTEMWEB%.BibtexFormfieldPlugin#DeploymentNotes][deployment notes]] for more information.%ENDSECTION{"installwarn"}%
+
+You probably need to set =BIBLIOGRAPHYWEB= in the =%WEBPREFSTOPIC%= topic of the web where you will be making =[<nop>[Cite::Syntax]]= references (enabled by [[%SYSTEMWEB%.SemanticLinksPlugin][SemanticLinksPlugin]]), and if that web does not contain the bibliography web (as a subweb), then the bibliography web should probably also have it set there too (Eg. in [[%BASEWEB%.%WEBPREFSTOPIC%]])</blockquote>"
+}%%ENDSECTION{"creator"}%
+
+%STARTSECTION{"grid"}%%IF{
+  "defined BIBLIOGRAPHYWEB AND '%BIBLIOGRAPHYWEB%.ThisREfeRencWILLN3berExiSt' allows 'CHANGE'"
+  then="<blockquote class='foswikiHelp'>$percntI$percnt You may double-click any row in the grid to edit that record. Press enter to save changes</blockquote>"
+}%
+See below the grid for [[#UsageNotes][usage notes]]
+%GRID{
+  query="%IF{"$'BIBLIOGRAPHY_NODBCACHE' OR NOT context 'DBCachePluginEnabled'" then="form.name" else="form"}%"
+  columns="Topic,%BIBLIOGRAPHY_GRIDFIELDS%"
+  Topic_title="Key"
+  Topic_width="50"
+  Modified_width="20"
+  width="auto"
+  height="auto"
+  filterbar="on"
+  pager="on"
+  rowlist="10, 20, 30, 40, 50, 100, 500, 1000"
+  rows="20"
+  rownumbers="on"
+  edit="on"
+}%%ENDSECTION{"grid"}%
+
+%STARTSECTION{"usage"}%
+#UsageNotes
+---++ How to cite something on your wiki page
+%IF{
+  "defined BIBLIOGRAPHYWEB AND $'BIBLIOGRAPHYWEB'"
+  then="$percntINCLUDE{\"%TOPIC%\" section=\"usagenotes\"}$percnt"
+  else="<blockquote class='foswikiHelp'>$percntX$percnt %INCLUDE{"%TOPIC%" section="installwarn"}%.
+
+[[%TOPIC%?section=usagenotes][Usage notes]] will be shown once a =BIBLIOGRAPHYWEB= preference has been set.</blockquote>"
+}%%ENDSECTION{"usage"}%
+
+<verbatim class="foswikiHidden">%STARTSECTION{"usagenotes"}%
+The reference you wish to cite must exist as a topic in the =%BIBLIOGRAPHYWEB%= web. If you don't know the key of the reference you need to cite, you may use the grid to find it, or you can %TWISTYSHOW{id="bibcreator" link="create a new entry"}% for it.
+
+%JQREQUIRE{"chili"}%<verbatim class="tml" style="display:inline;">[[SemanticLink::BibliographyKey]]</verbatim>
+
+E.g. <verbatim class="tml" style="display:inline;">[[Cite::Duke_2006]]</verbatim>.
+
+Once the semantic links are added to the topic text [[Cite::Duke_2006]], [[Cite::Duke_2006b]] a list of the references used in the topic will be displayed in the topic footer.
+
+%FORMAT{"%QUERY{"slvalues[property='Cite'].value"}%"
+   type="topic"
+   separator="$n"
+   header="---++ Bibliography$n"
+   format="   1 <a name='$percntQUERY{\"'$topic'/Key\"}$percnt'></a>$percntQUERY{\"'$topic'/Description\"}$percnt"
+}%
+
+Rendering of the cite link <verbatim class="tml" style="display:inline;">[[Cite::Duke_2006]]</verbatim> with the topic text can be formatted using the [[Cite]] template topic.%ENDSECTION{"usagenotes"}%
+%STARTSECTION{"showcreator"}%%IF{
+    "'%BIBLIOGRAPHYWEB%.ThisREfeRencWILLN3berExiSt' allows 'CHANGE'"
+    then="$percntTWISTY{showlink=\"Create new bibliography record...\" id=\"bibcreator\"}$percnt$percntINCLUDE{\"WebCreateNewTopic\" section=\"addbibtopic\"}$percnt$percntENDTWISTY$percnt"
+    else="<blockquote class='foswikiHelp'>$percntI$percnt You must be logged in and have CHANGE permission to create or modify bibliography records. Contact $percntWIKIWEBMASTER$percnt for more information</blockquote>"
+  }%%ENDSECTION{"showcreator"}%</verbatim>

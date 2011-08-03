@@ -1,0 +1,46 @@
+%META:TOPICINFO{author="ProjectContributor" date="1231502400" format="1.1" version="$Rev$"}%
+%META:TOPICPARENT{name="WebHome"}%
+
+%TMPL:INCLUDE{"view"}%
+%TMPL:DEF{"content"}%%STARTSECTION{"addbibtopic"}%
+<form action='%SCRIPTURLPATH{"edit"}%/%IF{
+  "defined $'BIBLIOGRAPHYWEB'"
+  then="%BIBLIOGRAPHYWEB%"
+  else="%BASEWEB%"
+}%/'>
+<div class="foswikiFormSteps">
+  <div class="foswikiFormStep">
+    <h2>Create new bibiliography record</h2>
+  </div>
+  <div class="foswikiFormStep">
+    <h3>Key</h3>
+        <input id="topic" type="text" name="topic" size="20" />
+  </div>
+  <div class="foswikiFormStep">
+    <h3>Type</h3>
+      %IF{
+        "defined WEBFORMS AND $'WEBFORMS'=~'\w'"
+        then="$percntFORMAT{
+          \"%WEBFORMS%\"
+          type=\"topic\"
+          format=\"    <input type='radio' name='formtemplate' value='$web.$topic' id='$topic' $percntIF{
+            \"'$index'='1'\"
+            then=\"checked='checked'\"
+            }$percnt/>
+          <label for='$topic'>[[$web.$topic][$topic]]</label>\"
+        }$percnt"
+        else="<blockquote class='foswikiHelp'>$percntX$percnt The =WEBFORMS= [[%SYSTEMWEB%.PreferenceSettings][preference setting]] is empty or undefined. It needs to be set (probably in [[%BASEWEB%.%WEBPREFSTOPIC%][%WEBPREFSTOPIC%]]) so that bibliography records can be created. See the [[%SYSTEMWEB%.DataForms#EnablingForms][_enabling forms_ documentation]] or [[_Bibliography.%WEBPREFSTOPIC%]] for an example</blockquote>"
+      }%
+  </div>
+  <div class="foswikiFormStep foswikiFormButtons">
+    %BUTTON{"%MAKETEXT{"Create"}%" icon="newtopic" type="submit"}%
+    %CLEAR%
+  </div>
+</div>
+<input type="hidden" name="onlywikiname" value="off" />
+<input type="hidden" name="onlynewtopic" value="on" />
+<input type="hidden" name="action" value="form"/>
+<input type="hidden" name="redirectto" value="%BASEWEB%.%BASETOPIC%"/>
+</form>%ENDSECTION{"addbibtopic"}%%TMPL:END%%TMPL:DEF{"junk"}%
+   * Set VIEW_TEMPLATE = Applications/Bibliography.WebCreateNewTopic
+%TMPL:END%

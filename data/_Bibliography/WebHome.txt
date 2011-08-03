@@ -1,0 +1,7 @@
+%META:TOPICINFO{author="ProjectContributor" date="1231502400" format="1.1" version="$Rev$"}%
+---+!! %MAKETEXT{"Welcome to the [_1] web" args="<nop>%WEB%"}%
+
+---++ Bibliography
+%INCLUDE{"Applications/Bibliography.%HOMETOPIC%" section="creator"}%
+%INCLUDE{"Applications/Bibliography.%HOMETOPIC%" section="grid"}%
+%INCLUDE{"Applications/Bibliography.%HOMETOPIC%" section="usage"}%

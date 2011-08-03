@@ -1,0 +1,45 @@
+---+ Bibliography record types
+%SEARCH{
+  "form.name='%WEB%.TypeForm'"
+  type="query"
+  excludetopic="*Template"
+  header="| *Form* | *Type* | *Description* |"
+  format="| [[$web.$topic][$topic]] | $formfield(Type) | $formfield(Description) |"
+}%
+
+%IF{
+ "'Th3seT0piCwillN3vberExist' allows CHANGE"
+ then="$percntINCLUDE{\"%TOPIC%\" section=\"showcreator\"}$percnt"
+else="You must be logged in and have CHANGE permission in =%WEB%= web to create or modify bibliography record types"
+}%
+
+<verbatim class="foswikiHidden">%STARTSECTION{"showcreator"}%%IF{
+  "context FlexFormPluginEnabled"
+  then="$percntINCLUDE{\"%TOPIC%\" section=\"creator\"}$percnt"
+  else="<blockquote class='foswikiHelp'>$percntX$percnt You must install and enable Foswiki:Extensions.FlexFormPlugin for the type creator to work</blockquote>"
+}%%ENDSECTION{"showcreator"}%%STARTSECTION{"creator"}%
+<form action='%SCRIPTURLPATH{"edit"}%/%WEB%/'>
+<div class="foswikiFormSteps">
+  <div class="foswikiFormStep">
+    <h2>Create new type of bibiliography record</h2>
+  </div>
+  <div class="foswikiFormStep">%JQREQUIRE{"wikiword"}%
+    <input id="topic" type="hidden" name="topic" class="jqWikiWord {source: '#TopicTitle', suffix:'Form'}" />
+    <h3>Name: <span class="jqWikiWord {source: '#TopicTitle', suffix:'Form'}" /></h3>
+    <input id="TopicTitle" type="text" name="TopicTitle" size="20" />
+  </div>
+  <div class="foswikiFormStep">
+    %RENDERFOREDIT{form="TypeForm"}%
+  </div>
+  <div class="foswikiFormStep foswikiFormButtons">
+    %BUTTON{"%MAKETEXT{"Create"}%" icon="newtopic" type="submit"}%
+    %CLEAR%
+  </div>
+</div>
+<input type="hidden" name="onlywikiname" value="off" />
+<input type="hidden" name="onlynewtopic" value="on" />
+<input type="hidden" name="formtemplate" value="%WEB%.TypeForm" />
+<input type="hidden" name="templatetopic" value="%WEB%.TypeTemplate" />
+<input type="hidden" name="redirectto" value="%BASEWEB%.%BASETOPIC%"/>
+</form>
+%ENDSECTION{"creator"}%</verbatim>
