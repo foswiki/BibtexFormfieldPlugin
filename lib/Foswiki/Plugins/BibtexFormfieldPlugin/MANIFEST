@@ -28,7 +28,6 @@ data/Applications/Bibliography/WebSearch.txt 0644
 data/Applications/Bibliography/WebSearchAdvanced.txt 0644
 data/Applications/Bibliography/WebStatistics.txt 0644
 data/Applications/Bibliography/WebTopicList.txt 0644
-data/Applications/WebPreferences.txt 0644
 data/System/BibtexFormfieldPlugin.txt 0644
 data/_Bibliography/WebAtom.txt 0644
 data/_Bibliography/WebChanges.txt 0644
