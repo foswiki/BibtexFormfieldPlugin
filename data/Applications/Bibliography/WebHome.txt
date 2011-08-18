@@ -4,7 +4,7 @@
   then="$percntINCLUDE{\"%TOPIC%\" section=\"showcreator\"}$percnt"
   else="<blockquote class='foswikiHelp'>$percntX$percnt %STARTSECTION{"installwarn"}% The =BIBLIOGRAPHYWEB= [[%SYSTEMWEB%.PreferenceSettings][preference setting]] is empty or undefined. This indicates that you may not have finished deploying this bibliography web properly; see [[%SYSTEMWEB%.BibtexFormfieldPlugin#DeploymentNotes][deployment notes]] for more information.%ENDSECTION{"installwarn"}%
 
-You probably need to set =BIBLIOGRAPHYWEB= in the =%WEBPREFSTOPIC%= topic of the web where you will be making =[<nop>[Cite::Syntax]]= references (enabled by [[%SYSTEMWEB%.SemanticLinksPlugin][SemanticLinksPlugin]]), and if that web does not contain the bibliography web (as a subweb), then the bibliography web should probably also have it set there too (Eg. in [[%BASEWEB%.%WEBPREFSTOPIC%]])</blockquote>"
+You probably need to set =BIBLIOGRAPHYWEB= in the =%WEBPREFSTOPIC%= topic of the web where you will be making =[<nop>[Cite::Syntax]]= references (enabled by [[Foswiki:Extensions.SemanticLinksPlugin][SemanticLinksPlugin]]), and if that web does not contain the bibliography web (as a subweb), then the bibliography web should probably also have it set there too (Eg. in [[%BASEWEB%.%WEBPREFSTOPIC%]])</blockquote>"
 }%%ENDSECTION{"creator"}%
 
 %STARTSECTION{"grid"}%%IF{
@@ -59,5 +59,5 @@ Rendering of the cite link <verbatim class="tml" style="display:inline;">[[Cite:
 %STARTSECTION{"showcreator"}%%IF{
     "'%BIBLIOGRAPHYWEB%.ThisREfeRencWILLN3berExiSt' allows 'CHANGE'"
     then="$percntTWISTY{showlink=\"Create new bibliography record...\" id=\"bibcreator\"}$percnt$percntINCLUDE{\"WebCreateNewTopic\" section=\"addbibtopic\"}$percnt$percntENDTWISTY$percnt"
-    else="<blockquote class='foswikiHelp'>$percntI$percnt You must be logged in and have CHANGE permission to create or modify bibliography records. Contact $percntWIKIWEBMASTER$percnt for more information</blockquote>"
+    else="<blockquote class='foswikiHelp'>$percntI$percnt You must be logged in and have [[%SYSTEMWEB%.AccessControls][CHANGE permission]] to create or modify bibliography records. Contact $percntWIKIWEBMASTER$percnt for more information</blockquote>"
   }%%ENDSECTION{"showcreator"}%</verbatim>

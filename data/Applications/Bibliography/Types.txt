@@ -17,7 +17,9 @@ else="You must be logged in and have CHANGE permission in =%WEB%= web to create 
   "context FlexFormPluginEnabled"
   then="$percntINCLUDE{\"%TOPIC%\" section=\"creator\"}$percnt"
   else="<blockquote class='foswikiHelp'>$percntX$percnt You must install and enable Foswiki:Extensions.FlexFormPlugin for the type creator to work</blockquote>"
-}%%ENDSECTION{"showcreator"}%%STARTSECTION{"creator"}%
+}%%ENDSECTION{"showcreator"}%
+
+%STARTSECTION{"creator"}%
 <form action='%SCRIPTURLPATH{"edit"}%/%WEB%/'>
 <div class="foswikiFormSteps">
   <div class="foswikiFormStep">
@@ -42,4 +44,19 @@ else="You must be logged in and have CHANGE permission in =%WEB%= web to create 
 <input type="hidden" name="templatetopic" value="%WEB%.TypeTemplate" />
 <input type="hidden" name="redirectto" value="%BASEWEB%.%BASETOPIC%"/>
 </form>
-%ENDSECTION{"creator"}%</verbatim>
+%ENDSECTION{"creator"}%
+
+%STARTSECTION{"list"}%%SEARCH{
+  "form.name='Applications/Bibliography.TypeForm'"
+  type="query"
+  excludetopic="*Template"
+  web="%IF{
+    "defined web AND $'web'"
+    then="%web%"
+    else="Applications/Bibliography"
+  }%"
+  nonoise="on"
+  separator=", "
+  format="$web.$topic"
+}%%ENDSECTION{"list"}%
+</verbatim>
