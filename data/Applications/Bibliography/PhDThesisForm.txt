@@ -1,5 +1,5 @@
 | *Name* | *Type* | *Size* | *Values* | *Tooltip* | *Attributes* |
-| bibtex | bibtex+textarea | 100x8  | | !BibTex markup  | |
+| bibtex | bibtex+code+textarea | 100x8  | | !BibTex markup  | |
 | keywords | bibtex+fragment+text | 100  | | Key words used for searching or possibly for annotation. | |
 | author | bibtex+fragment+text | 100 | | The name(s) of the author(s) (in the case of more than one author, separated by and) | |
 | title | bibtex+fragment+text | 100 | | The title of the work | |
