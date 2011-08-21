@@ -18,7 +18,7 @@ sub new {
     $type        = $4;
 
     if ( not $bibtype ) {
-        $bibtype = 'fragment';
+        $bibtype = 'field';
     }
     if ( not $type ) {
         $type = 'textarea';
