@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use Assert;
+use Foswiki::Form::FieldDefinition (); 
 our @ISA = ('Foswiki::Form::FieldDefinition');
 
 sub new {
