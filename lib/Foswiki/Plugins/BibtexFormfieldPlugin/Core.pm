@@ -189,7 +189,7 @@ sub parseBibtexCodeStringToHash{
 	
 	#~ ASSERT( exists $bibtexCodeString and $bibtexCodeString ) if DEBUG;
 	
-    my $entry;
+    my $entry = Text::BibTeX::Entry->new();
     my @fieldList;
     my $fieldValue;
     my $fieldName;
@@ -197,7 +197,6 @@ sub parseBibtexCodeStringToHash{
     my $key;
     my %parsedFields = ();
 	
-    my $entry = Text::BibTeX::Entry->new();
     
     writeDebug(
       "In detection loop, got code string: '$bibtexCodeString'")
@@ -304,15 +303,12 @@ sub resetBibtexFormFields{
 
 sub parseBibtexCodeToFields {
     my ( $bibtexCodeString, $topicObject, @bibtexFieldNames ) = @_;
-    my $entry;
+    my $entry = Text::BibTeX::Entry->new();
     my @fieldList;
     my $fieldValue;
     my $fieldName;
     my $type;
     my $key;
-
-    my $entry = Text::BibTeX::Entry->new();
-    my @fieldList;
 
     writeDebug(
       "In detection loop, got code string: '$bibtexCodeString'")
