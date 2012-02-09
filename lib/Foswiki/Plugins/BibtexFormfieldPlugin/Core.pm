@@ -24,7 +24,7 @@ use Data::Dumper;           # library for debugging
 #    writeDebug("MESSAGE: SCRIPT CALLED!!!";
 # writeDebug("This debug message goes to working/logs/debug.log");
 
-sub TRACE { 0 }
+sub TRACE     { 0 }
 sub TRACESAVE { 0 }
 
 sub beforeSaveHandler {
@@ -38,34 +38,53 @@ sub beforeSaveHandler {
             $formTopic );
 
         if ($formDef) {
-            my ( $bibtexCodeFieldName, @bibtexFieldNames ) = getBibtexFieldNames($formDef);
+            my ( $bibtexCodeFieldName, @bibtexFieldNames ) =
+              getBibtexFieldNames($formDef);
 
             if ($bibtexCodeFieldName) {
-                my ($origTopicObject) = Foswiki::Func::readTopic($web, $topic);
-                my %origData  = writeBibtexFieldsToHash( $origTopicObject, @bibtexFieldNames);
-                my %currentData  = writeBibtexFieldsToHash( $topicObject, @bibtexFieldNames);
-                my $origString = $origTopicObject->get('FIELD', $bibtexCodeFieldName);
-                my $currentString = $topicObject->get('FIELD', $bibtexCodeFieldName);
-                my $type = getBibtexType($topicObject, $formDef);
-                my $key  = getBibtexKey($topicObject);
+                my ($origTopicObject) =
+                  Foswiki::Func::readTopic( $web, $topic );
+                my %origData = writeBibtexFieldsToHash( $origTopicObject,
+                    @bibtexFieldNames );
+                my %currentData =
+                  writeBibtexFieldsToHash( $topicObject, @bibtexFieldNames );
+                my $origString =
+                  $origTopicObject->get( 'FIELD', $bibtexCodeFieldName );
+                my $currentString =
+                  $topicObject->get( 'FIELD', $bibtexCodeFieldName );
+                my $type = getBibtexType( $topicObject, $formDef );
+                my $key = getBibtexKey($topicObject);
                 my $finalString;
 
                 writeDebug("Found bibtexCode field!") if TRACE;
                 $origString = $origString->{value} if defined $origString;
-                $currentString = $currentString->{value} if defined $currentString;
+                $currentString = $currentString->{value}
+                  if defined $currentString;
 
-                $origString =~ s/[\r\n]+/\n/g;
+                $origString    =~ s/[\r\n]+/\n/g;
                 $currentString =~ s/[\r\n]+/\n/g;
                 ### new currentString has changed? parse it
-                if ((defined $origString ? $origString : '') ne (defined $currentString ? $currentString : '')) {
-                    my %currentStringData = parseStringToHash( $currentString );
+                if ( ( defined $origString ? $origString : '' ) ne
+                    ( defined $currentString ? $currentString : '' ) )
+                {
+                    my %currentStringData = parseStringToHash($currentString);
 
-                    writeDebug("Different strings, was: \n'" .
-                        ($origString || '') . '\'/' . length($origString ||'') . ", now: \n'" . 
-                        ($currentString || '' ) . '\'/' . (length($currentString || '')) . "\n" . Data::Dumper->Dump([\%currentStringData])) if TRACESAVE;
-                    if (scalar(keys %currentStringData)) {
-                        $finalString = createNewStringFromData( type => $type, key => $key, %currentStringData);
-                    } else {
+                    writeDebug( "Different strings, was: \n'"
+                          . ( $origString || '' ) . '\'/'
+                          . length( $origString || '' )
+                          . ", now: \n'"
+                          . ( $currentString || '' ) . '\'/'
+                          . ( length( $currentString || '' ) ) . "\n"
+                          . Data::Dumper->Dump( [ \%currentStringData ] ) )
+                      if TRACESAVE;
+                    if ( scalar( keys %currentStringData ) ) {
+                        $finalString = createNewStringFromData(
+                            type => $type,
+                            key  => $key,
+                            %currentStringData
+                        );
+                    }
+                    else {
                         $finalString = '';
                     }
                 }
@@ -74,40 +93,73 @@ sub beforeSaveHandler {
                     delete $origData{type};
                     delete $currentData{key};
                     delete $currentData{type};
-                    my $ncurrent = scalar (keys %currentData);
-                    my $norig = scalar (keys %origData);
-                    if ($ncurrent != $norig) {
-                        writeDebug("Different No. keys, was $norig, now $ncurrent: " . Data::Dumper->Dump([\%origData]) . ' vs ' . Data::Dumper->Dump([\%currentData])) if TRACESAVE;
-                        $finalString = createNewStringFromData( type => $type, key => $key, %currentData);
-                    } else {
+                    my $ncurrent = scalar( keys %currentData );
+                    my $norig    = scalar( keys %origData );
+                    if ( $ncurrent != $norig ) {
+                        writeDebug(
+                            "Different No. keys, was $norig, now $ncurrent: "
+                              . Data::Dumper->Dump( [ \%origData ] ) . ' vs '
+                              . Data::Dumper->Dump( [ \%currentData ] ) )
+                          if TRACESAVE;
+                        $finalString = createNewStringFromData(
+                            type => $type,
+                            key  => $key,
+                            %currentData
+                        );
+                    }
+                    else {
                         my @origKeys = keys %origData;
 
-                        while (!$finalString && scalar(@origKeys)) {
-                            my $origKey = pop(@origKeys);
-                            my $origValue = $origData{$origKey};
+                        while ( !$finalString && scalar(@origKeys) ) {
+                            my $origKey      = pop(@origKeys);
+                            my $origValue    = $origData{$origKey};
                             my $currentValue = $currentData{$origKey};
 
-                            if ((defined $origValue ? $origValue : '') ne (defined $currentValue ? $currentValue : '')) {
-                                writeDebug("Different key, $origKey => was:\n'$origValue', now:\n'$currentValue'\n") if TRACESAVE;
-                                $finalString = createNewStringFromData( type => $type, key => $key, %currentData);
+                            if ( ( defined $origValue ? $origValue : '' ) ne
+                                ( defined $currentValue ? $currentValue : '' ) )
+                            {
+                                writeDebug(
+"Different key, $origKey => was:\n'$origValue', now:\n'$currentValue'\n"
+                                ) if TRACESAVE;
+                                $finalString = createNewStringFromData(
+                                    type => $type,
+                                    key  => $key,
+                                    %currentData
+                                );
                             }
                         }
                     }
                 }
 
-                if (defined $finalString) {
+                if ( defined $finalString ) {
                     require Encode if TRACESAVE;
-                    writeDebug("FINAL, was:\n'" . (Encode::encode('utf8', $origString) || 'undef' ) . "', now:\n'" . (Encode::encode('utf8', $finalString)) . "', " . length($origString||'') . '/' . length($finalString) . "\n") if TRACESAVE;
-                    my %finalData = parseStringToHash( $finalString);
+                    writeDebug( "FINAL, was:\n'"
+                          . ( Encode::encode( 'utf8', $origString ) || 'undef' )
+                          . "', now:\n'"
+                          . ( Encode::encode( 'utf8', $finalString ) ) . "', "
+                          . length( $origString || '' ) . '/'
+                          . length($finalString)
+                          . "\n" )
+                      if TRACESAVE;
+                    my %finalData = parseStringToHash($finalString);
                     foreach my $field (@bibtexFieldNames) {
-                        if (defined $finalData{$field}) {
-                            writeDebug("PUTTING $field = " . (defined $finalData{$field} ? $finalData{$field} : 'undef') . "\n") if TRACESAVE;
+                        if ( defined $finalData{$field} ) {
+                            writeDebug(
+                                "PUTTING $field = "
+                                  . (
+                                    defined $finalData{$field}
+                                    ? $finalData{$field}
+                                    : 'undef'
+                                  )
+                                  . "\n"
+                            ) if TRACESAVE;
                         }
                         $topicObject->putKeyed(
                             'FIELD',
                             {
-                                name  => $field,
-                                #value => Encode::encode('utf8', $finalData{$field} || ''),
+                                name => $field,
+
+                     #value => Encode::encode('utf8', $finalData{$field} || ''),
                                 value => $finalData{$field},
                                 title => $field
                             },
@@ -117,7 +169,8 @@ sub beforeSaveHandler {
                         'FIELD',
                         {
                             name  => $bibtexCodeFieldName,
-                            title  => $bibtexCodeFieldName,
+                            title => $bibtexCodeFieldName,
+
                             #value => Encode::encode('utf8', $finalString)
                             value => $finalString
                         },
@@ -134,10 +187,10 @@ sub beforeSaveHandler {
 }
 
 sub getBibtexType {
-    my ($topicObj, $formDef) = @_;
+    my ( $topicObj, $formDef ) = @_;
     ASSERT($topicObj);
     ASSERT($formDef);
-    my $type = $formDef->get('FIELD', 'Type');
+    my $type = $formDef->get( 'FIELD', 'Type' );
 
     $type = $type->{value} if $type;
     if ( !$type ) {
@@ -150,8 +203,8 @@ sub getBibtexType {
 }
 
 sub getBibtexKey {
-    my ($topicObj, $formDef) = @_;
-    my $key = $topicObj->get('FIELD', 'key');
+    my ( $topicObj, $formDef ) = @_;
+    my $key = $topicObj->get( 'FIELD', 'key' );
 
     $key = $key->{value} if $key;
     if ( !$key ) {
@@ -160,6 +213,7 @@ sub getBibtexKey {
 
     return $key;
 }
+
 sub createNewStringFromData {
     my (%data) = @_;
     my $bibtexCodeString;
@@ -175,7 +229,8 @@ sub createNewStringFromData {
     $bibtexCodeString = "\@$entryType\{$entryKey,\n";
     delete $data{key};
     delete $data{type};
-    $bibtexCodeString .= join(",\n", map { "    $_ = {$data{$_}}"} keys %data);
+    $bibtexCodeString .=
+      join( ",\n", map { "    $_ = {$data{$_}}" } keys %data );
     $bibtexCodeString .= "\n}";
 
     writeDebug("Value of \$bibtexCodeString:\n $bibtexCodeString");
@@ -184,9 +239,10 @@ sub createNewStringFromData {
 }
 
 sub parseStringToHash {
-    my ( $bibtexCodeString ) = @_;
+    my ($bibtexCodeString) = @_;
 
     my %parsedFields = ();
+
     #~ ASSERT( exists $topicObject and defined( $topicObject ) ) if DEBUG;
     #~ ASSERT( exists $bibtexCodeFieldName and $bibtexCodeFieldName ) if DEBUG;
     #~ ASSERT( exists $bibtexFieldNames and $bibtexFieldNames ) if DEBUG;
@@ -229,7 +285,7 @@ sub parseStringToHash {
 
             $parsedFields{$fieldName} = $fieldValue;
             writeDebug(
-                "The hash field '$fieldName' of '\%parsedFields' has the value: "
+"The hash field '$fieldName' of '\%parsedFields' has the value: "
                   . $parsedFields{$fieldName} )
               if TRACE;
         }
@@ -302,17 +358,16 @@ sub getBibtexFieldNames {
 
     ASSERT( $formDef->can('getFields') ) if DEBUG;
     my $fields = $formDef->getFields();
-    ASSERT( ref( $fields ) eq 'ARRAY' ) if DEBUG;
-    ASSERT( scalar( @{ $fields } ) ) if DEBUG;
+    ASSERT( ref($fields) eq 'ARRAY' ) if DEBUG;
+    ASSERT( scalar( @{$fields} ) ) if DEBUG;
 
     if ( $fields and ref($fields) eq 'ARRAY' and scalar( @{$fields} ) )
     {    # form definition found, if not the formfields aren't indexed
         writeDebug("Got form field definitions!") if TRACE;
-        foreach my $fieldDef ( @{ $fields } ) {
+        foreach my $fieldDef ( @{$fields} ) {
             writeDebug("Start 1") if TRACE;
             if ( $fieldDef->{type} and $fieldDef->{name} ) {
-                writeDebug(
-                    "Start 2: $fieldDef->{type} is $fieldDef->{name}")
+                writeDebug("Start 2: $fieldDef->{type} is $fieldDef->{name}")
                   if TRACE;
                 if ( $fieldDef->{type} =~ /^bibtex\+code\b/ ) {
                     writeDebug(
